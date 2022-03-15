@@ -1,0 +1,19 @@
+const SIGNIN = 'SIGNIN';
+const SIGNUP = 'SIGNUP';
+const AUTH_TYPE = 'AUTH_TYPE';
+const LOADING = 'LOADING';
+const UPDATER = 'UPDATER';
+const GET_POSTS = 'GET_POSTS';
+const THEME = 'THEME';
+const SWIPEABLE_PANEL = 'SWIPEABLE_PANEL';
+
+export {
+  SIGNIN,
+  SIGNUP,
+  AUTH_TYPE,
+  LOADING,
+  GET_POSTS,
+  THEME,
+  SWIPEABLE_PANEL,
+  UPDATER,
+};
