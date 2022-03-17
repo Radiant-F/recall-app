@@ -10,11 +10,11 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSelector} from 'react-redux';
 
 export default function SendCommentButton({onPress}) {
-  const {loading} = useSelector(state => state.utils);
+  const {panelLoading} = useSelector(state => state.utils);
   return (
     <TouchableNativeFeedback useForeground onPress={onPress}>
       <View style={styles.view}>
-        {loading ? (
+        {panelLoading ? (
           <ActivityIndicator size="small" style={styles.icon} color="black" />
         ) : (
           <Icon name="send" size={23} color="dodgerblue" style={styles.icon} />
