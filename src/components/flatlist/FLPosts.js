@@ -11,10 +11,10 @@ import {CatPict} from '../../assets/exports';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment';
 import Gap from '../Gap';
-import {Comments, PostActionButton} from '../exports';
+import {Comments, PostActionButton, PostMenuButton} from '../exports';
 import {useDispatch, useSelector} from 'react-redux';
 import {likePost} from '../../redux/actions/posts';
-import {SWIPEABLE_PANEL} from '../../redux/actionTypes';
+import {MENU_PANEL, SWIPEABLE_PANEL} from '../../redux/actionTypes';
 
 export default function FLPosts({
   item,
@@ -27,15 +27,36 @@ export default function FLPosts({
 }) {
   const {background, postCard, selectedTheme, subtext, text} = theme;
   const dispatch = useDispatch();
-  const iconName = item.likes.find(id => id == userData.id)
+  const iconName = item.likes.find(id => id == userData?.id)
     ? 'thumb-up'
     : 'thumb-up-outline';
+  const submitLike = (id, index) =>
+    dispatch(likePost(id, userData?.id, index, token, posts, updater));
+  const openComment = (comments, id) =>
+    dispatch({
+      type: SWIPEABLE_PANEL,
+      payload: {
+        active: true,
+        comments: comments,
+        postId: id,
+      },
+    });
+
+  function openPostMenu() {
+    if (item.creator == userData?.id) {
+      dispatch({type: MENU_PANEL, payload: {active: true, post: item}});
+    } else console.log('postingan orang');
+  }
+
   return (
     <View style={styles.container}>
       {index == 0 && <Text style={styles.textTitle(text)}>Discover</Text>}
-      <TouchableNativeFeedback key={item._id} useForeground>
+      <TouchableNativeFeedback
+        key={item._id}
+        useForeground
+        onPress={openPostMenu}>
         <View style={styles.viewPost(postCard)}>
-          <Image source={CatPict} style={styles.img} />
+          <Image source={{uri: item.selectedFile}} style={styles.img} />
           <Gap height={10} />
           <View style={styles.viewCreator}>
             <View style={styles.viewPPImg}>
@@ -49,12 +70,11 @@ export default function FLPosts({
               </Text>
             </View>
           </View>
+          <Gap height={5} />
           <View style={styles.viewPostContent}>
             <View style={{flex: 1}}>
               <Text style={styles.textPostTitle}>{item.title}</Text>
-              <Text style={styles.textPostMessage}>
-                {item.message} kenangan yang panjang banget waaaa
-              </Text>
+              <Text style={styles.textPostMessage}>{item.message}</Text>
               <Gap flex={1} marginTop={10} />
               <View style={styles.viewTag}>
                 {item.tags
@@ -71,35 +91,18 @@ export default function FLPosts({
               <Gap flex={1} />
               <PostActionButton
                 iconName={iconName}
-                onPress={() =>
-                  dispatch(
-                    likePost(
-                      item._id,
-                      userData.id,
-                      index,
-                      token,
-                      posts,
-                      updater,
-                    ),
-                  )
-                }
+                onPress={() => submitLike(item._id, index)}
               />
               <Gap height={15} />
               <PostActionButton
                 iconName="comment-outline"
-                onPress={() =>
-                  dispatch({
-                    type: SWIPEABLE_PANEL,
-                    payload: {
-                      active: true,
-                      comments: item.comments,
-                      postId: item._id,
-                    },
-                  })
-                }
+                onPress={() => openComment(item.comments, item._id)}
               />
             </View>
           </View>
+          {item.creator == userData.id && (
+            <PostMenuButton onPress={openPostMenu} />
+          )}
         </View>
       </TouchableNativeFeedback>
     </View>
