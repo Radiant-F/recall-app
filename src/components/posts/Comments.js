@@ -18,7 +18,7 @@ import {commentPost} from '../../redux/actions/posts';
 export default function Comments() {
   const {utils, auth} = useSelector(state => state);
   const {comments, active, postId} = utils.commentPanel;
-  const {updater, loading} = utils;
+  const {updater} = utils;
   const dispatch = useDispatch();
   const [value, setValue] = useState();
   const closePanel = () =>
@@ -31,8 +31,10 @@ export default function Comments() {
     dispatch(commentPost({value}, postId, auth.token, comments, updater));
     setValue();
   }
+
   return (
     <SwipeablePanel
+      closeOnTouchOutside
       onClose={closePanel}
       onPressClose={closePanel}
       style={styles.viewPanel}
@@ -51,15 +53,16 @@ export default function Comments() {
           placeholder="Write a public comment..."
           underlineColorAndroid="black"
           style={{flex: 1}}
-          onBlur={submitComment}
           onChangeText={setValue}
+          onSubmitEditing={submitComment}
+          autoFocus
         />
         <Gap width={10} />
         <SendCommentButton onPress={submitComment} />
       </View>
-      {comments?.length > 0 ? (
-        <View style={{padding: 15}}>
-          {comments.map((value, index) => (
+      <View style={{padding: 15}}>
+        {comments &&
+          comments.map((value, index) => (
             <View style={styles.viewComment} key={index}>
               <View style={styles.viewCommentPp}>
                 <Icon name="account" size={27} />
@@ -68,10 +71,11 @@ export default function Comments() {
               <Text>{value}</Text>
             </View>
           ))}
-        </View>
-      ) : (
-        <Text style={styles.textEmpty}>Be the first comment!</Text>
-      )}
+      </View>
+      {!comments ||
+        (comments.length < 1 && (
+          <Text style={{textAlign: 'center'}}>Be the first comment!</Text>
+        ))}
     </SwipeablePanel>
   );
 }
@@ -94,10 +98,6 @@ const styles = StyleSheet.create({
   textPanelTitle: {
     fontWeight: 'bold',
     fontSize: 17,
-  },
-  textEmpty: {
-    textAlign: 'center',
-    marginVertical: 15,
   },
   viewCommentForm: {
     flexDirection: 'row',
