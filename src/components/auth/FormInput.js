@@ -8,17 +8,30 @@ import {
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export default function FormInput({onChangeText, placeholder, password, flex}) {
+export default function FormInput({
+  onChangeText,
+  placeholder,
+  password,
+  flex,
+  multiline,
+  height = 50,
+  defaultValue,
+}) {
   const [showPass, setShowPass] = useState(true);
   return (
     <View style={{...styles.view(password), flex}}>
       <TextInput
-        style={styles.textInput}
+        style={{
+          ...styles.textInput,
+          height,
+        }}
         onChangeText={onChangeText}
         placeholder={placeholder}
         placeholderTextColor="grey"
         selectionColor="white"
         secureTextEntry={password ? showPass : false}
+        multiline={multiline}
+        defaultValue={defaultValue}
       />
       {password && (
         <TouchableNativeFeedback
@@ -53,7 +66,6 @@ const styles = StyleSheet.create({
   },
   view: password => ({
     backgroundColor: '#3c4043',
-    height: 50,
     borderColor: 'grey',
     borderWidth: 1,
     borderRadius: 15,
