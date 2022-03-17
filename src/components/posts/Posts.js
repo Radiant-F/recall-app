@@ -1,13 +1,17 @@
-import {View, ActivityIndicator, FlatList, RefreshControl} from 'react-native';
+import {
+  View,
+  ActivityIndicator,
+  FlatList,
+  RefreshControl,
+  StyleSheet,
+} from 'react-native';
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {getPosts} from '../../redux/actions/posts';
-import {FLPosts} from '../exports';
-import DBHeader from '../DBHeader';
+import {FloatingButton, FLPosts, Comments, Menu, DBHeader} from '../exports';
 import colors from '../../utils/colors';
-import Comments from './Comments';
 
-export default function Posts() {
+export default function Posts({navigation}) {
   const {posts, utils, auth} = useSelector(state => state);
   const dispatch = useDispatch();
   const theme = colors();
@@ -34,21 +38,19 @@ export default function Posts() {
         <ActivityIndicator
           size="large"
           color="white"
-          style={{
-            position: 'absolute',
-            alignSelf: 'center',
-            marginVertical: 40,
-          }}
+          style={styles.loading(allPosts)}
         />
       )}
+      {!allPosts && <DBHeader onPress={() => navigation.navigate('Profile')} />}
       {allPosts && (
         <FlatList
           data={allPosts}
           keyExtractor={post => post._id}
           renderItem={renderItem}
-          maxToRenderPerBatch={8}
           stickyHeaderIndices={[0]}
-          ListHeaderComponent={<DBHeader />}
+          ListHeaderComponent={
+            <DBHeader onPress={() => navigation.navigate('Profile')} />
+          }
           stickyHeaderHiddenOnScroll
           refreshControl={
             <RefreshControl
@@ -59,6 +61,16 @@ export default function Posts() {
         />
       )}
       <Comments />
+      <Menu navigation={navigation} />
+      <FloatingButton onPress={() => navigation.navigate('PostForm')} />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  loading: posts => ({
+    position: 'absolute',
+    alignSelf: 'center',
+    top: posts ? 105 : 120,
+  }),
+});
