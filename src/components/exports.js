@@ -12,8 +12,16 @@ import Posts from './posts/Posts';
 import PostActionButton from './buttons/PostActionButton';
 import Comments from './posts/Comments';
 import SendCommentButton from './buttons/SendCommentButton';
-
+import FloatingButton from './buttons/FloatingButton';
+import Header from './Header';
+import PostMenuButton from './buttons/PostMenuButton';
+import Menu from './posts/Menu';
+import PostOptionButton from './buttons/PostOptionButton';
 export {
+  PostOptionButton,
+  Menu,
+  PostMenuButton,
+  Header,
   Comments,
   PostActionButton,
   FLPosts,
@@ -28,4 +36,5 @@ export {
   DBHeader,
   SearchButton,
   SendCommentButton,
+  FloatingButton,
 };
