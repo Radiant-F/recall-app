@@ -9,6 +9,7 @@ import {AUTH_TYPE} from '../../redux/actionTypes';
 export default function SignIn({navigation}) {
   const {utils} = useSelector(state => state);
   const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({email: null, password: null});
 
   function signIn() {
