@@ -6,9 +6,17 @@ export default (
 ) => {
   switch (action.type) {
     case SIGNIN:
-      return {token: action.payload.token, userData: action.payload.result};
+      return {
+        ...state,
+        token: action.payload.token,
+        userData: action.payload.result,
+      };
     case SIGNUP:
-      return {token: action.payload.token, userData: action.payload.data};
+      return {
+        ...state,
+        token: action.payload.token,
+        userData: action.payload.data,
+      };
     case AUTH_TYPE:
       return {...state, is_login: action.payload};
     default:

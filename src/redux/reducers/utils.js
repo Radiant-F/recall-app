@@ -1,12 +1,24 @@
-import {LOADING, SWIPEABLE_PANEL, THEME, UPDATER} from '../actionTypes';
+import {
+  LOADING,
+  MENU_PANEL,
+  PANEL_LOADING,
+  SWIPEABLE_PANEL,
+  THEME,
+  UPDATER,
+} from '../actionTypes';
 
 export default (
   state = {
     commentPanel: {
-      comments: null,
       active: false,
       postId: null,
+      comments: null,
     },
+    menuPanel: {
+      active: false,
+      post: null,
+    },
+    panelLoading: false,
     loading: false,
     updater: false,
     theme: {
@@ -36,7 +48,17 @@ export default (
       return {...state, selectedTheme: action.payload};
     case SWIPEABLE_PANEL:
       const {active, comments, postId} = action.payload;
-      return {...state, commentPanel: {active, comments, postId}};
+      return {
+        ...state,
+        commentPanel: {active, comments: comments?.reverse(), postId},
+      };
+    case MENU_PANEL:
+      return {
+        ...state,
+        menuPanel: {active: action.payload.active, post: action.payload.post},
+      };
+    case PANEL_LOADING:
+      return {...state, panelLoading: action.payload};
     default:
       return state;
   }
