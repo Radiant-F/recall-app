@@ -2,7 +2,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import FormInput from './FormInput';
 import {useDispatch, useSelector} from 'react-redux';
-import {postSignIn} from '../../redux/actions/auth';
+import {postSignUp} from '../../redux/actions/auth';
 import {AuthButton, Gap} from '../exports';
 import {AUTH_TYPE} from '../../redux/actionTypes';
 
@@ -25,7 +25,7 @@ export default function SignUp({navigation}) {
       formData.lastName &&
       formData.confirmPassword
     ) {
-      dispatch(postSignIn(formData, navigation));
+      dispatch(postSignUp(formData, navigation));
     } else return console.log('isi dengan benar');
   }
 
