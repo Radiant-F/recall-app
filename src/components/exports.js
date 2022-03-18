@@ -17,7 +17,9 @@ import Header from './Header';
 import PostMenuButton from './buttons/PostMenuButton';
 import Menu from './posts/Menu';
 import PostOptionButton from './buttons/PostOptionButton';
+import ProfilePost from './posts/ProfilePost';
 export {
+  ProfilePost,
   PostOptionButton,
   Menu,
   PostMenuButton,
