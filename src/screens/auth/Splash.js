@@ -24,15 +24,7 @@ export default function Splash({navigation}) {
   return (
     <View style={styles.container(background)}>
       <CStatusBar />
-      <Button
-        title={`current theme: ${selectedTheme}. tap to change`}
-        onPress={() =>
-          dispatch({
-            type: THEME,
-            payload: selectedTheme == 'dark' ? 'light' : 'dark',
-          })
-        }
-      />
+
       <ActivityIndicator
         size="large"
         color={selectedTheme == 'dark' ? 'white' : 'black'}

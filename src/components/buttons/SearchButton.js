@@ -1,12 +1,14 @@
 import {StyleSheet, Text, View, TouchableNativeFeedback} from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/Feather';
+import colors from '../../utils/colors';
 
 export default function SearchButton({onPress}) {
+  const {postCard, text} = colors();
   return (
     <TouchableNativeFeedback useForeground onPress={onPress}>
-      <View style={styles.viewButton}>
-        <Icon name="search" size={25} color="white" style={styles.icon} />
+      <View style={styles.viewButton(postCard)}>
+        <Icon name="search" size={25} color={text} style={styles.icon} />
       </View>
     </TouchableNativeFeedback>
   );
@@ -14,16 +16,16 @@ export default function SearchButton({onPress}) {
 
 const styles = StyleSheet.create({
   icon: {
-    alignSelf: 'center',
+    textAlign: 'center',
     textAlignVertical: 'center',
-    height: '100%',
+    flex: 1,
   },
-  viewButton: {
+  viewButton: backgroundColor => ({
     width: 50,
     height: 50,
     borderRadius: 50 / 2,
     overflow: 'hidden',
-    backgroundColor: '#4c4f52',
-    elevation: 10,
-  },
+    backgroundColor,
+    elevation: 3,
+  }),
 });

@@ -25,7 +25,7 @@ export default function FLPosts({
   posts,
   updater,
 }) {
-  const {background, postCard, selectedTheme, subtext, text} = theme;
+  const {postCard, text} = theme;
   const dispatch = useDispatch();
   const iconName = item.likes.find(id => id == userData?.id)
     ? 'thumb-up'
@@ -64,7 +64,7 @@ export default function FLPosts({
             </View>
             <Gap width={10} />
             <View>
-              <Text style={styles.textCreatorName}>{item.name}</Text>
+              <Text style={styles.textCreatorName(text)}>{item.name}</Text>
               <Text style={{color: 'grey'}}>
                 {moment(item.createdAt).fromNow()}
               </Text>
@@ -73,8 +73,8 @@ export default function FLPosts({
           <Gap height={5} />
           <View style={styles.viewPostContent}>
             <View style={{flex: 1}}>
-              <Text style={styles.textPostTitle}>{item.title}</Text>
-              <Text style={styles.textPostMessage}>{item.message}</Text>
+              <Text style={styles.textPostTitle(text)}>{item.title}</Text>
+              <Text style={{color: text}}>{item.message}</Text>
               <Gap flex={1} marginTop={10} />
               <View style={styles.viewTag}>
                 {item.tags
@@ -110,12 +110,12 @@ export default function FLPosts({
 }
 
 const styles = StyleSheet.create({
-  textPostTitle: {
+  textPostTitle: color => ({
     marginVertical: 10,
-    color: 'white',
+    color,
     fontWeight: 'bold',
     fontSize: 16,
-  },
+  }),
   viewPostContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -139,14 +139,10 @@ const styles = StyleSheet.create({
   viewTag: {
     flexDirection: 'row',
   },
-  textPostMessage: {
-    color: 'white',
-    // marginVertical: 10,
-  },
-  textCreatorName: {
+  textCreatorName: color => ({
     fontWeight: 'bold',
-    color: 'white',
-  },
+    color,
+  }),
   viewCreator: {
     flexDirection: 'row',
     alignItems: 'center',

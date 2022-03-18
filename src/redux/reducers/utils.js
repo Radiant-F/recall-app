@@ -23,7 +23,7 @@ export default (
     updater: false,
     theme: {
       light: {
-        background: 'white',
+        background: '#e2e2e2',
         text: 'black',
         subtext: 'grey',
         postCard: 'white',

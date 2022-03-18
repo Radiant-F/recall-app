@@ -4,17 +4,19 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Gap from './Gap';
 import {SearchButton} from './exports';
 import {useSelector} from 'react-redux';
+import colors from '../utils/colors';
 
 export default function DBHeader({onPress}) {
   const {userData} = useSelector(state => state.auth);
+  const {postCard, text} = colors();
   return (
     <View style={styles.viewHeader}>
       <TouchableNativeFeedback useForeground onPress={onPress}>
-        <View style={styles.viewProfile}>
-          <Icon name="account-circle" size={50} color="white" />
+        <View style={styles.viewProfile(postCard)}>
+          <Icon name="account-circle" size={50} color={text} />
           <Gap width={10} />
           <View>
-            <Text style={styles.textName}>{userData?.name}</Text>
+            <Text style={styles.textName(text)}>{userData?.name}</Text>
             <Text style={styles.textEmail}>{userData?.email}</Text>
           </View>
         </View>
@@ -26,25 +28,25 @@ export default function DBHeader({onPress}) {
 }
 
 const styles = StyleSheet.create({
-  viewProfile: {
+  viewProfile: backgroundColor => ({
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#4c4f52',
+    backgroundColor,
     borderRadius: 10,
     padding: 5,
     paddingRight: 35,
     paddingLeft: 20,
-    elevation: 5,
+    elevation: 3,
     overflow: 'hidden',
-  },
+  }),
   textEmail: {
     color: 'grey',
   },
-  textName: {
-    color: 'white',
+  textName: color => ({
+    color,
     fontWeight: 'bold',
     fontSize: 17,
-  },
+  }),
   viewHeader: {
     alignItems: 'center',
     flexDirection: 'row',
