@@ -1,5 +1,5 @@
 import * as API from '../../utils/APIs';
-import {LOADING, SIGNIN} from '../actionTypes';
+import {AUTH_TYPE, LOADING, SIGNIN, SIGNUP} from '../actionTypes';
 import errorHandler from './ErrorHandler';
 import EncryptedStorage from 'react-native-encrypted-storage';
 
@@ -17,15 +17,20 @@ export const postSignUp = (formData, navigation) => async dispatch => {
   dispatch({type: LOADING, payload: true});
   try {
     const {data} = await API.signUp(formData);
-    navigate(formData, dispatch, navigation, data);
+    dispatch({type: AUTH_TYPE, payload: true});
+    navigate(formData, dispatch, navigation, data, 'SIGNUP');
   } catch (error) {
     errorHandler(error, dispatch, 'Data tidak ditemukan');
   }
 };
 
-const navigate = (formData, dispatch, navigation, data) => {
+const navigate = (formData, dispatch, navigation, data, signup) => {
   EncryptedStorage.setItem('empas', JSON.stringify(formData));
-  dispatch({type: LOADING, payload: false});
-  dispatch({type: SIGNIN, payload: data});
-  navigation.replace('Dashboard');
+  if (signup) {
+    dispatch({type: SIGNUP, payload: data});
+  } else dispatch({type: SIGNIN, payload: data});
+  setTimeout(() => {
+    navigation.replace('Dashboard');
+    dispatch({type: LOADING, payload: false});
+  }, 1000);
 };
