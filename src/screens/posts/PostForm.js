@@ -20,13 +20,15 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {CatPict} from '../../assets/exports';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {createPost, editPost} from '../../redux/actions/posts';
+import {useTranslation} from 'react-i18next';
 
 export default function PostForm({navigation, route}) {
+  const {t} = useTranslation();
   const dispatch = useDispatch();
   const {auth, utils} = useSelector(state => state);
   const {token, userData} = auth;
   const isEditing = route.params;
-  const {background, postCard} = colors();
+  const {background, postCard, text} = colors();
   const [formData, setFormData] = useState({
     title: null,
     message: null,
@@ -79,14 +81,14 @@ export default function PostForm({navigation, route}) {
     <View style={{flex: 1, backgroundColor: background}}>
       <CStatusBar />
       <Header
-        title={isEditing ? 'Edit Post' : 'Create Post'}
+        title={isEditing ? t('Edit Recall') : t('Create Recall')}
         leftIcon={'chevron-left'}
         onPressLeft={() => navigation.goBack()}
       />
       <ScrollView>
         <View style={styles.container}>
           <TouchableNativeFeedback useForeground onPress={imageHandler}>
-            <View style={styles.viewImage}>
+            <View style={styles.viewImage(postCard)}>
               {formData.selectedFile ? (
                 <Image
                   source={{uri: formData.selectedFile}}
@@ -97,7 +99,7 @@ export default function PostForm({navigation, route}) {
                 <Icon
                   name="camera-enhance-outline"
                   style={styles.iconCamera}
-                  color="white"
+                  color={text}
                   size={32}
                 />
               )}
@@ -105,13 +107,13 @@ export default function PostForm({navigation, route}) {
           </TouchableNativeFeedback>
           <Gap height={10} />
           <FormInput
-            placeholder={'Give it a title..'}
+            placeholder={t('Give it a title..')}
             onChangeText={input => formDataHandler('title', input)}
             defaultValue={formData.title}
           />
           <Gap height={10} />
           <FormInput
-            placeholder={'Give it a description..'}
+            placeholder={t('Give it a description..')}
             height={100}
             onChangeText={input => formDataHandler('message', input)}
             defaultValue={formData.message}
@@ -119,7 +121,7 @@ export default function PostForm({navigation, route}) {
           />
           <Gap height={10} />
           <FormInput
-            placeholder={'Tags (seperated by space)'}
+            placeholder={t('Tags (seperated by space)')}
             onChangeText={input => formDataHandler('tags', input)}
             defaultValue={formData.tags}
           />
@@ -128,7 +130,7 @@ export default function PostForm({navigation, route}) {
       </ScrollView>
       <View style={{margin: 20}}>
         <AuthButton
-          title={isEditing ? 'Edit' : 'Post'}
+          title={isEditing ? t('Edit') : t('Post')}
           onPress={submitHandler}
           disabled={utils.loading}
         />
@@ -143,14 +145,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     textAlignVertical: 'center',
   },
-  viewImage: {
-    backgroundColor: '#4c4f52',
+  viewImage: backgroundColor => ({
+    backgroundColor,
     height: 150,
     elevation: 3,
     borderRadius: 10,
     overflow: 'hidden',
     padding: 10,
-  },
+  }),
   img: {
     flex: 1,
     width: '100%',

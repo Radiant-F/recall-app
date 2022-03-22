@@ -3,13 +3,16 @@ import React, {useState} from 'react';
 import FormInput from './FormInput';
 import {useDispatch, useSelector} from 'react-redux';
 import {postSignIn} from '../../redux/actions/auth';
-import {AuthButton, Gap} from '../exports';
+import {AuthButton, Gap, LangSwitcher} from '../exports';
 import {AUTH_TYPE} from '../../redux/actionTypes';
+import colors from '../../utils/colors';
+import {useTranslation} from 'react-i18next';
 
 export default function SignIn({navigation}) {
-  const {utils} = useSelector(state => state);
+  const {t} = useTranslation();
   const dispatch = useDispatch();
-
+  const {utils} = useSelector(state => state);
+  const {text} = colors();
   const [formData, setFormData] = useState({email: null, password: null});
 
   function signIn() {
@@ -20,33 +23,40 @@ export default function SignIn({navigation}) {
 
   return (
     <View style={styles.container}>
-      <Gap height={40} />
-      <Text style={styles.textTitle}>Let's sign you in.</Text>
+      <LangSwitcher />
+      <Text style={styles.textTitle(text)}>{t('Lets sign you in.')}</Text>
       <Gap height={10} />
-      <Text style={styles.textSubtitle}>Welcome back.</Text>
-      <Text style={styles.textSubtitle}>You've been missed!</Text>
+      <Text style={styles.textSubtitle(text)}>{t('Welcome back.')}</Text>
+      <Text style={styles.textSubtitle(text)}>{t('Youve been missed!')}</Text>
       <Gap height={50} />
       <FormInput
-        onChangeText={input => setFormData({...formData, email: input})}
+        onChangeText={input =>
+          setFormData({...formData, email: input.trimEnd()})
+        }
         placeholder="Email"
       />
       <Gap height={20} />
       <FormInput
         onChangeText={input => setFormData({...formData, password: input})}
-        placeholder="Password"
+        placeholder={t('Password')}
         password={true}
       />
       <View style={styles.viewSubmit}>
         <Text style={styles.textQustion}>
-          Don't have any account?{'  '}
+          {t('Dont have any account?')}
+          {'  '}
           <Text
-            style={styles.textRegister}
+            style={styles.textRegister(text)}
             onPress={() => dispatch({type: AUTH_TYPE, payload: false})}>
-            Register
+            {t('Register')}
           </Text>
         </Text>
         <Gap height={10} />
-        <AuthButton title="Sign In" disabled={utils.loading} onPress={signIn} />
+        <AuthButton
+          title={t('Sign In')}
+          disabled={utils.loading}
+          onPress={signIn}
+        />
       </View>
     </View>
   );
@@ -67,17 +77,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'grey',
   },
-  textRegister: {
-    color: 'white',
+  textRegister: color => ({
+    color,
     fontWeight: 'bold',
-  },
-  textSubtitle: {
-    color: 'white',
+  }),
+  textSubtitle: color => ({
+    color,
     fontSize: 20,
-  },
-  textTitle: {
+  }),
+  textTitle: color => ({
     fontWeight: 'bold',
     fontSize: 30,
-    color: 'white',
-  },
+    color,
+  }),
 });

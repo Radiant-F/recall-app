@@ -14,11 +14,14 @@ import {useDispatch, useSelector} from 'react-redux';
 import {SWIPEABLE_PANEL} from '../../redux/actionTypes';
 import {SendCommentButton} from '../exports';
 import {commentPost} from '../../redux/actions/posts';
+import colors from '../../utils/colors';
+import {useTranslation} from 'react-i18next';
 
 export default function Comments() {
+  const {t} = useTranslation();
   const {utils, auth} = useSelector(state => state);
   const {comments, active, postId} = utils.commentPanel;
-  const {updater} = utils;
+  const {background, text, postCard} = colors();
   const dispatch = useDispatch();
   const [value, setValue] = useState();
   const closePanel = () =>
@@ -28,7 +31,7 @@ export default function Comments() {
     });
   function submitComment() {
     if (!value) return console.log('komentar kosong');
-    dispatch(commentPost({value}, postId, auth.token, comments, updater));
+    dispatch(commentPost({value}, postId, auth.token, comments, utils.updater));
     setValue();
   }
 
@@ -37,21 +40,23 @@ export default function Comments() {
       closeOnTouchOutside
       onClose={closePanel}
       onPressClose={closePanel}
-      style={styles.viewPanel}
+      style={styles.viewPanel(postCard)}
       fullWidth
       isActive={active}>
       <View style={styles.viewPanelBar}>
-        <Text style={styles.textPanelTitle}>Comments</Text>
-        <Icon name="close" size={24} onPress={closePanel} />
+        <Text style={styles.textPanelTitle(text)}>{t('Comments')}</Text>
+        <Icon name="close" size={24} onPress={closePanel} color={text} />
       </View>
       <View style={styles.viewCommentForm}>
         <View style={styles.panelPP}>
-          <Icon name="account" size={40} />
+          <Icon name="account" size={32} />
         </View>
         <Gap width={10} />
         <TextInput
-          placeholder="Write a public comment..."
-          underlineColorAndroid="black"
+          selectionColor={text}
+          placeholderTextColor={'grey'}
+          placeholder={t('Write a public comment...')}
+          underlineColorAndroid={text}
           style={{flex: 1}}
           onChangeText={setValue}
           onSubmitEditing={submitComment}
@@ -74,7 +79,9 @@ export default function Comments() {
       </View>
       {!comments ||
         (comments.length < 1 && (
-          <Text style={{textAlign: 'center'}}>Be the first comment!</Text>
+          <Text style={{textAlign: 'center', color: 'grey'}}>
+            {t('Be the first comment!')}
+          </Text>
         ))}
     </SwipeablePanel>
   );
@@ -95,10 +102,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-  textPanelTitle: {
+  textPanelTitle: color => ({
     fontWeight: 'bold',
     fontSize: 17,
-  },
+    color,
+  }),
   viewCommentForm: {
     flexDirection: 'row',
     padding: 20,
@@ -107,13 +115,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   panelPP: {
-    width: 50,
-    height: 50,
-    borderRadius: 50 / 2,
+    width: 45,
+    height: 45,
+    borderRadius: 45 / 2,
     backgroundColor: 'white',
-    borderWidth: 2,
+    borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    borderColor: 'grey',
   },
   viewPanelBar: {
     flexDirection: 'row',
@@ -122,7 +131,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     paddingBottom: 10,
   },
-  viewPanel: {
+  viewPanel: backgroundColor => ({
     maxWidth: 520,
-  },
+    backgroundColor,
+  }),
 });

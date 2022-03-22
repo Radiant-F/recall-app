@@ -3,12 +3,16 @@ import React, {useState} from 'react';
 import FormInput from './FormInput';
 import {useDispatch, useSelector} from 'react-redux';
 import {postSignUp} from '../../redux/actions/auth';
-import {AuthButton, Gap} from '../exports';
+import {AuthButton, Gap, LangSwitcher} from '../exports';
 import {AUTH_TYPE} from '../../redux/actionTypes';
+import colors from '../../utils/colors';
+import {useTranslation} from 'react-i18next';
 
 export default function SignUp({navigation}) {
+  const {t} = useTranslation();
   const {utils} = useSelector(state => state);
   const dispatch = useDispatch();
+  const {text} = colors();
   const [formData, setFormData] = useState({
     firstName: null,
     lastName: null,
@@ -31,21 +35,21 @@ export default function SignUp({navigation}) {
 
   return (
     <View style={styles.container}>
-      <Gap height={40} />
-      <Text style={styles.textTitle}>Let's sign you up.</Text>
+      <LangSwitcher />
+      <Text style={styles.textTitle(text)}>{t('Lets sign you up.')}</Text>
       <Gap height={10} />
-      <Text style={styles.textSubtitle}>Welcome!</Text>
+      <Text style={styles.textSubtitle(text)}>{t('Welcome!')}</Text>
       <Gap height={50} />
       <View style={styles.viewTextInput}>
         <FormInput
           onChangeText={input => setFormData({...formData, firstName: input})}
-          placeholder="First Name"
+          placeholder={t('First Name')}
           flex={1}
         />
         <Gap width={20} />
         <FormInput
           onChangeText={input => setFormData({...formData, lastName: input})}
-          placeholder="Last Name"
+          placeholder={t('Last Name')}
           flex={1}
         />
       </View>
@@ -57,7 +61,7 @@ export default function SignUp({navigation}) {
       <Gap height={20} />
       <FormInput
         onChangeText={input => setFormData({...formData, password: input})}
-        placeholder="Password"
+        placeholder={t('Password')}
         password={true}
       />
       <Gap height={20} />
@@ -65,20 +69,25 @@ export default function SignUp({navigation}) {
         onChangeText={input =>
           setFormData({...formData, confirmPassword: input})
         }
-        placeholder="Confirm Password"
+        placeholder={t('Confirm Password')}
         password={true}
       />
       <Gap height={50} />
       <Text style={styles.textQustion}>
-        Do you have any account?{'  '}
+        {t('Do you have any account?')}
+        {'  '}
         <Text
-          style={styles.textRegister}
+          style={styles.textRegister(text)}
           onPress={() => dispatch({type: AUTH_TYPE, payload: true})}>
-          Login
+          {t('Login')}
         </Text>
       </Text>
       <Gap height={10} />
-      <AuthButton title="Sign Up" disabled={utils.loading} onPress={signIn} />
+      <AuthButton
+        title={t('Sign Up')}
+        disabled={utils.loading}
+        onPress={signIn}
+      />
       <Gap height={30} />
     </View>
   );
@@ -105,17 +114,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'grey',
   },
-  textRegister: {
-    color: 'white',
+  textRegister: color => ({
+    color,
     fontWeight: 'bold',
-  },
-  textSubtitle: {
-    color: 'white',
+  }),
+  textSubtitle: color => ({
+    color,
     fontSize: 20,
-  },
-  textTitle: {
+  }),
+  textTitle: color => ({
     fontWeight: 'bold',
     fontSize: 30,
-    color: 'white',
-  },
+    color,
+  }),
 });

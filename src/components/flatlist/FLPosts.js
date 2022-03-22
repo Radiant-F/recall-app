@@ -15,6 +15,7 @@ import {Comments, PostActionButton, PostMenuButton} from '../exports';
 import {useDispatch, useSelector} from 'react-redux';
 import {likePost} from '../../redux/actions/posts';
 import {MENU_PANEL, SWIPEABLE_PANEL} from '../../redux/actionTypes';
+import {useTranslation} from 'react-i18next';
 
 export default function FLPosts({
   item,
@@ -25,6 +26,7 @@ export default function FLPosts({
   posts,
   updater,
 }) {
+  const {t} = useTranslation();
   const {postCard, text} = theme;
   const dispatch = useDispatch();
   const iconName = item.likes.find(id => id == userData?.id)
@@ -50,7 +52,9 @@ export default function FLPosts({
 
   return (
     <View style={styles.container}>
-      {index == 0 && <Text style={styles.textTitle(text)}>Discover</Text>}
+      {index == 0 && (
+        <Text style={styles.textTitle(text)}>{t('Discover')}</Text>
+      )}
       <TouchableNativeFeedback
         key={item._id}
         useForeground

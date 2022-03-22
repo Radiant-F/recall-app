@@ -6,7 +6,7 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import colors from '../../utils/colors';
 import {MENU_PANEL, SWIPEABLE_PANEL} from '../../redux/actionTypes';
@@ -14,8 +14,10 @@ import {FLPosts, Gap, PostActionButton, PostMenuButton} from '../exports';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment';
 import {likePost} from '../../redux/actions/posts';
+import {useTranslation} from 'react-i18next';
 
 export default function ProfilePost() {
+  const {t} = useTranslation();
   const dispatch = useDispatch();
   const {posts, auth, utils} = useSelector(state => state);
   const {id} = auth.userData;
@@ -47,13 +49,14 @@ export default function ProfilePost() {
     <View style={{marginBottom: 75}}>
       <Gap height={20} />
       <View style={{flexDirection: 'row'}}>
-        <Text style={styles.textTitle2(text)}>Your Recall</Text>
-        {utils.loading && <ActivityIndicator color={'white'} />}
+        <Text style={styles.textTitle2(text)}>{t('Your Recall')}</Text>
+        {utils.loading && <ActivityIndicator color={text} />}
+        {!filteredPosts && <ActivityIndicator color={text} />}
       </View>
-      {filteredPosts.length < 1 && (
-        <Text style={styles.textNoRecall}>Your Recall is empty!</Text>
+      {filteredPosts?.length < 1 && (
+        <Text style={styles.textNoRecall}>{t('Your Recall is empty!')}</Text>
       )}
-      {filteredPosts.map((item, index) => (
+      {filteredPosts?.map((item, index) => (
         <TouchableNativeFeedback
           key={item._id}
           useForeground
