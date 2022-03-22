@@ -1,8 +1,12 @@
 import {StyleSheet, Text, View, TouchableNativeFeedback} from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 import Gap from './Gap';
 import colors from '../utils/colors';
+import {useDispatch, useSelector} from 'react-redux';
+import {THEME} from '../redux/actionTypes';
+import {useNavigation} from '@react-navigation/native';
 
 export default function Header({
   leftIcon,
@@ -10,8 +14,15 @@ export default function Header({
   onPressLeft,
   rightIcon,
   onPressRight,
+  themeSwitcher,
+  setting,
 }) {
+  const {navigate} = useNavigation();
+  const dispatch = useDispatch();
+  const {selectedTheme} = useSelector(state => state.utils);
+  const theme = selectedTheme == 'light' ? 'dark' : 'light';
   const widthGap = leftIcon ? 15 : 25;
+  const switchTheme = () => dispatch({type: THEME, payload: theme});
   const {background, text} = colors();
   return (
     <View style={styles.container(background)}>
@@ -27,6 +38,36 @@ export default function Header({
       )}
       <Gap width={widthGap} />
       <Text style={styles.textTitle(text)}>{title}</Text>
+      {setting && (
+        <TouchableNativeFeedback
+          useForeground
+          onPress={() => navigate('Settings')}
+          background={TouchableNativeFeedback.Ripple(null, null, 20)}>
+          <View style={{...styles.viewIcon, marginRight: 5}}>
+            <IonIcon
+              name={'settings-outline'}
+              size={27}
+              color={text}
+              style={styles.icon}
+            />
+          </View>
+        </TouchableNativeFeedback>
+      )}
+      {themeSwitcher && (
+        <TouchableNativeFeedback
+          useForeground
+          onPress={switchTheme}
+          background={TouchableNativeFeedback.Ripple(null, null, 20)}>
+          <View style={{...styles.viewIcon, marginRight: 5}}>
+            <Icon
+              name={selectedTheme == 'dark' ? 'weather-sunny' : 'weather-night'}
+              size={27}
+              color={text}
+              style={styles.icon}
+            />
+          </View>
+        </TouchableNativeFeedback>
+      )}
       {rightIcon && (
         <TouchableNativeFeedback
           useForeground
