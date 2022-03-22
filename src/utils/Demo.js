@@ -1,73 +1,52 @@
-import {StyleSheet, Text, View, Button, TextInput} from 'react-native';
-import React, {useState} from 'react';
-import {SwipeablePanel} from 'rn-swipeable-panel';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Gap from '../components/Gap';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import React from 'react';
 
-export default function Demo() {
-  const [isPanelActive, setIsPanelActive] = useState(false);
-
-  const closePanel = () => {
-    setIsPanelActive(false);
-  };
-
+export default function Demo(props) {
+  const {t, i18n} = props.screenProps;
   return (
-    <View style={{flex: 1}}>
-      <Button title="open panel" onPress={() => setIsPanelActive(true)} />
-      <SwipeablePanel
-        style={styles.viewPanel}
-        fullWidth
-        onClose={() => setIsPanelActive(false)}
-        isActive={isPanelActive}>
-        <View style={styles.viewPanelBar}>
-          <Text>Comments</Text>
-          <Icon
-            name="close"
-            size={24}
-            onPress={() => setIsPanelActive(false)}
-          />
-        </View>
-        <View style={styles.viewCommentForm}>
-          <View style={styles.panelPP}>
-            <Icon name="account" size={40} />
-          </View>
-          <Gap width={10} />
-          <TextInput
-            placeholder="Write a public comment..."
-            // autoFocus
-            underlineColorAndroid="black"
-            style={{flex: 1}}
-          />
-        </View>
-      </SwipeablePanel>
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Text
+        style={{
+          margin: 20,
+          fontSize: 30,
+        }}>
+        {t('Hey Yo Im at home')}
+      </Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          margin: 10,
+        }}>
+        <TouchableOpacity
+          onPress={() => i18n.changeLanguage('en')} //Here I change the language to "en" English
+          style={Styles.button}>
+          <Text style={{color: '#fff'}}>EN</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => i18n.changeLanguage('es')} //Here I change the language to "es" Spanish
+          style={Styles.button}>
+          <Text style={{color: '#fff'}}>ES</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => i18n.changeLanguage('de')} //Here I change the language to "de" German
+          style={Styles.button}>
+          <Text style={{color: '#fff'}}>DE</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => i18n.changeLanguage('id')} //Here I change the language to "id" Indonesia
+          style={Styles.button}>
+          <Text style={{color: '#fff'}}>ID</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  viewCommentForm: {
-    flexDirection: 'row',
-    padding: 20,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    marginBottom: 1,
-  },
-  panelPP: {
-    width: 50,
-    height: 50,
-    borderRadius: 50 / 2,
-    backgroundColor: 'white',
-    borderWidth: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  viewPanelBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    paddingBottom: 10,
-  },
-  viewPanel: {
-    maxWidth: 520,
+const Styles = StyleSheet.create({
+  button: {
+    backgroundColor: '#61e3a5',
+    padding: 10,
+    borderRadius: 10,
+    margin: 10,
   },
 });

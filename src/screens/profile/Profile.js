@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, ScrollView, Alert} from 'react-native';
+import {StyleSheet, Text, View, ScrollView} from 'react-native';
 import React from 'react';
 import colors from '../../utils/colors';
 import {
@@ -12,44 +12,22 @@ import {
 } from '../../components/exports';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSelector} from 'react-redux';
-import EncryptedStorage from 'react-native-encrypted-storage';
+import {useTranslation} from 'react-i18next';
 
 export default function Profile({navigation}) {
+  const {t} = useTranslation();
   const {email, name} = useSelector(state => state.auth.userData);
   const {background, text, postCard} = colors();
-
-  function logout() {
-    Alert.alert(
-      '',
-      'Logout?',
-      [
-        {
-          text: 'Logout',
-          onPress: () => {
-            EncryptedStorage.clear();
-            navigation.reset({
-              index: 0,
-              routes: [{name: 'Auth'}],
-            });
-          },
-          style: 'destructive',
-        },
-        {text: 'Cancel', style: 'cancel'},
-      ],
-      {cancelable: true},
-    );
-  }
 
   return (
     <View style={{flex: 1, backgroundColor: background}}>
       <CStatusBar />
       <ScrollView stickyHeaderIndices={[0]} stickyHeaderHiddenOnScroll>
         <Header
-          title="Profile"
+          title={t('Profile')}
           leftIcon={'chevron-left'}
           onPressLeft={() => navigation.goBack()}
-          rightIcon={'logout'}
-          onPressRight={logout}
+          setting
         />
         <View style={styles.container}>
           <View style={styles.viewProfile}>
