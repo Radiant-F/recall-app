@@ -18,7 +18,9 @@ import PostMenuButton from './buttons/PostMenuButton';
 import Menu from './posts/Menu';
 import PostOptionButton from './buttons/PostOptionButton';
 import ProfilePost from './posts/ProfilePost';
+import LangSwitcher from './buttons/LangSwitcher';
 export {
+  LangSwitcher,
   ProfilePost,
   PostOptionButton,
   Menu,
