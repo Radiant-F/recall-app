@@ -8,30 +8,25 @@ import {
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Gap from '../Gap';
+import colors from '../../utils/colors';
 
 export default function PostOptionButton({
   onPress,
   icon = 'cog',
   title = 'Option',
   disabled,
+  iconColor,
 }) {
+  const {text} = colors();
   return (
     <TouchableNativeFeedback
       useForeground
       onPress={onPress}
       disabled={disabled}>
       <View style={styles.view}>
-        <Icon name={icon} size={32} color="black" />
+        <Icon name={icon} size={32} color={iconColor ? iconColor : text} />
         <Gap width={10} />
-        {/* {disabled ? (
-          <ActivityIndicator
-            color="black"
-            size="small"
-            style={styles.loading}
-          />
-        ) : ( */}
-        <Text style={{color: 'black'}}>{title}</Text>
-        {/* )} */}
+        <Text style={{color: text}}>{title}</Text>
       </View>
     </TouchableNativeFeedback>
   );
