@@ -31,6 +31,5 @@ const navigate = (formData, dispatch, navigation, data, signup) => {
   } else dispatch({type: SIGNIN, payload: data});
   setTimeout(() => {
     navigation.replace('Dashboard');
-    dispatch({type: LOADING, payload: false});
   }, 1000);
 };
