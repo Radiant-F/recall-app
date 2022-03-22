@@ -1,5 +1,4 @@
 import React from 'react';
-import {Button} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {
@@ -9,21 +8,14 @@ import {
   Demo,
   PostForm,
   Profile,
+  Settings,
 } from '../screens/exports';
-import EncryptedStorage from 'react-native-encrypted-storage';
 
-const ClearButton = () => (
-  <Button title="clear data" onPress={() => EncryptedStorage.clear()} />
-);
 const Stack = createNativeStackNavigator();
 const Navigator = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerRight: () => ClearButton(),
-          headerShown: false,
-        }}>
+      <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen component={Splash} name="Splash" />
         <Stack.Screen
           component={Auth}
@@ -38,6 +30,7 @@ const Navigator = () => {
           options={{animation: 'slide_from_bottom'}}
         />
         <Stack.Screen component={Profile} name="Profile" />
+        <Stack.Screen component={Settings} name="Settings" />
       </Stack.Navigator>
     </NavigationContainer>
   );
