@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import colors from '../../utils/colors';
 
 export default function FormInput({
   onChangeText,
@@ -18,17 +19,19 @@ export default function FormInput({
   defaultValue,
 }) {
   const [showPass, setShowPass] = useState(true);
+  const {postCard, text} = colors();
   return (
-    <View style={{...styles.view(password), flex}}>
+    <View style={{...styles.view(password, postCard), flex}}>
       <TextInput
         style={{
           ...styles.textInput,
+          color: text,
           height,
         }}
         onChangeText={onChangeText}
         placeholder={placeholder}
         placeholderTextColor="grey"
-        selectionColor="white"
+        selectionColor={text}
         secureTextEntry={password ? showPass : false}
         multiline={multiline}
         defaultValue={defaultValue}
@@ -64,8 +67,8 @@ const styles = StyleSheet.create({
     color: 'white',
     flex: 1,
   },
-  view: password => ({
-    backgroundColor: '#3c4043',
+  view: (password, backgroundColor) => ({
+    backgroundColor,
     borderColor: 'grey',
     borderWidth: 1,
     borderRadius: 15,
@@ -73,5 +76,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     flexDirection: 'row',
     paddingRight: password ? 5 : 15,
+    elevation: 3,
   }),
 });
