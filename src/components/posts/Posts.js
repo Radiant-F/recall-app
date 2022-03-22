@@ -10,14 +10,15 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getPosts} from '../../redux/actions/posts';
 import {FloatingButton, FLPosts, Comments, Menu, DBHeader} from '../exports';
 import colors from '../../utils/colors';
+import Gap from '../Gap';
 
 export default function Posts({navigation}) {
-  const {posts, utils, auth} = useSelector(state => state);
   const dispatch = useDispatch();
-  const theme = colors();
+  const {posts, utils, auth} = useSelector(state => state);
   useEffect(() => {
     dispatch(getPosts());
   }, [utils.updater]);
+  const theme = colors();
   const allPosts = posts.posts;
 
   const renderItem = ({item, index}) => (
@@ -37,7 +38,7 @@ export default function Posts({navigation}) {
       {utils.loading && (
         <ActivityIndicator
           size="large"
-          color="white"
+          color={theme.text}
           style={styles.loading(allPosts)}
         />
       )}
@@ -48,10 +49,11 @@ export default function Posts({navigation}) {
           keyExtractor={post => post._id}
           renderItem={renderItem}
           stickyHeaderIndices={[0]}
+          stickyHeaderHiddenOnScroll
+          ListFooterComponent={<Gap height={75} />}
           ListHeaderComponent={
             <DBHeader onPress={() => navigation.navigate('Profile')} />
           }
-          stickyHeaderHiddenOnScroll
           refreshControl={
             <RefreshControl
               onRefresh={() => dispatch(getPosts())}
@@ -60,9 +62,9 @@ export default function Posts({navigation}) {
           }
         />
       )}
+      <FloatingButton onPress={() => navigation.navigate('PostForm')} />
       <Comments />
       <Menu navigation={navigation} />
-      <FloatingButton onPress={() => navigation.navigate('PostForm')} />
     </View>
   );
 }
