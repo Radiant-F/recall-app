@@ -9,6 +9,9 @@ import {
 
 export default (
   state = {
+    loading: false,
+    updater: false,
+    panelLoading: false,
     commentPanel: {
       active: false,
       postId: null,
@@ -18,9 +21,7 @@ export default (
       active: false,
       post: null,
     },
-    panelLoading: false,
-    loading: false,
-    updater: false,
+    selectedTheme: 'light',
     theme: {
       light: {
         background: '#e2e2e2',
@@ -35,7 +36,6 @@ export default (
         postCard: '#4c4f52',
       },
     },
-    selectedTheme: 'dark',
   },
   action,
 ) => {
